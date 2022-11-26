@@ -1,12 +1,12 @@
 const index = {
   local: {
-    apiBaseURI: "http://localhost:3000/api/",
+    apiBaseURI: "http://localhost/api/",
   },
   dev: {
-    apiBaseURI: "http://localhost:3000/api/",
+    apiBaseURI: "http://localhost/api/",
   },
   prod: {
-    apiBaseURI: "http://localhost:3000/api/",
+    apiBaseURI: "http://localhost/api/",
   },
 };
 
