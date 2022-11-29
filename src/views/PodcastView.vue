@@ -2,20 +2,26 @@
   <div class="container">
     <app-header />
     <podcast-search />
+    <h1 class="podcast__heading">
+      Список подкастов
+      {{ store.isSearchResult ? "по релевантности" : "" }}
+    </h1>
+    <podcast-list :podcasts="store.podcastsList" />
   </div>
 </template>
 
 <script>
 import { onMounted, ref } from "vue";
 import { podcastsStore } from "@/store/podcastsStore";
-import { getAudioDuration } from "@/plugins/getAudioDuration";
-import { uploadPodcast } from "@/api/podcasts";
 import PodcastSearch from "@/components/PodcastSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import PodcastList from "@/components/PodcastList.vue";
+import { uploadPodcast } from "@/api/podcasts";
+import { getAudioDuration } from "@/plugins/getAudioDuration";
 
 export default {
   name: "PodcastView",
-  components: { AppHeader, PodcastSearch },
+  components: { PodcastList, AppHeader, PodcastSearch },
   setup() {
     let isFormLoading = ref(false);
     let isPodcastsLoading = ref(false);
@@ -44,6 +50,7 @@ export default {
       loadFile,
       isFormLoading,
       isPodcastsLoading,
+      store,
     };
   },
 };
