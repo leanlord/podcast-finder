@@ -1,9 +1,9 @@
 import instance from "@/api/http";
 
-export const uploadPodcast = (formData, duration) =>
+export const uploadPodcast = (payload) =>
   instance.post(
     "upload",
-    { file: formData, duration },
+    { ...payload },
     {
       headers: {
         "Content-Type": "multipart/form-data",

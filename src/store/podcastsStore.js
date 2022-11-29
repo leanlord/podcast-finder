@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
-import { getAllPodcasts, getPodcastsByWord } from "@/api/podcasts";
+import {
+  getAllPodcasts,
+  getPodcastsByWord,
+  uploadPodcast,
+} from "@/api/podcasts";
 import { podcastsTransform } from "@/plugins/podcastsTransform";
+import { getAudioDuration } from "@/plugins/getAudioDuration";
 
 export const podcastsStore = defineStore("podcasts", {
   state: () => {
@@ -9,6 +14,9 @@ export const podcastsStore = defineStore("podcasts", {
       searchValue: null,
       isSearchResult: false,
       isPodcastLoading: true,
+      isModalLoading: false,
+      isModalActive: false,
+      modalQuery: {},
     };
   },
   actions: {
@@ -29,6 +37,25 @@ export const podcastsStore = defineStore("podcasts", {
       } else {
         await this.fetchAllPodcasts();
       }
+    },
+    async createPodcast() {
+      this.isModalLoading = true;
+      await uploadPodcast(this.modalQuery)
+        .then((res) => {
+          this.isModalLoading = false;
+          this.isModalActive = false;
+          alert(res.data.message);
+        })
+        .catch((e) => {
+          this.isModalLoading = false;
+          this.isModalActive = false;
+          alert(e);
+        });
+    },
+    async loadFile(event) {
+      const file = event.target.files[0];
+      this.modalQuery.file = file;
+      this.modalQuery.duration = await getAudioDuration(file);
     },
   },
 });

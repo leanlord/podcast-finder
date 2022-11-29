@@ -6,17 +6,62 @@
       Список подкастов
       {{ store.isSearchResult ? "по релевантности" : "" }}
     </h1>
-    <div class="podcast__preloader" v-if="store.isPodcastLoading">
-      <div class="preloader">
-        <span class="dot"></span>
-        <div class="dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-    </div>
+    <app-preloader v-if="store.isPodcastLoading" />
     <podcast-list v-else :podcasts="store.podcastsList" />
+    <app-dialog
+      v-if="store.isModalActive"
+      :active="store.isModalActive"
+      @hide-modal="store.isModalActive = false"
+      head="Добавление подкаста"
+    >
+      <template #content>
+        <app-preloader v-if="store.isModalLoading" />
+        <form
+          v-else
+          name="modal_form"
+          id="modal_form"
+          @submit.prevent="store.createPodcast()"
+          class="auth__form"
+        >
+          <label for="modal_name">Название подкаста</label>
+          <input
+            required
+            id="modal_name"
+            class="auth__input"
+            type="text"
+            v-model="store.modalQuery.name"
+            placeholder="Название"
+          />
+          <label for="modal_file">Выбрать файл</label>
+          <input
+            required
+            id="modal_file"
+            class="auth__input"
+            type="file"
+            @change="(value) => loadFile(value)"
+          />
+        </form>
+      </template>
+      <template #footer>
+        <div class="modal__buttons">
+          <button
+            :disabled="store.isModalLoading"
+            @click="store.isModalActive = false"
+            class="btn btn_white"
+          >
+            Отменить
+          </button>
+          <button
+            :disabled="store.isModalLoading"
+            form="modal_form"
+            type="submit"
+            class="btn"
+          >
+            Загрузить
+          </button>
+        </div>
+      </template>
+    </app-dialog>
   </div>
 </template>
 
@@ -26,33 +71,25 @@ import { podcastsStore } from "@/store/podcastsStore";
 import PodcastSearch from "@/components/PodcastSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import PodcastList from "@/components/PodcastList.vue";
-import { uploadPodcast } from "@/api/podcasts";
-import { getAudioDuration } from "@/plugins/getAudioDuration";
+import AppDialog from "@/components/AppDialog.vue";
+import AppPreloader from "@/components/AppPreloader.vue";
 
 export default {
   name: "PodcastView",
-  components: { PodcastList, AppHeader, PodcastSearch },
+  components: {
+    AppPreloader,
+    AppDialog,
+    PodcastList,
+    AppHeader,
+    PodcastSearch,
+  },
   setup() {
     const store = podcastsStore();
-    const loadFile = async (event) => {
-      isFormLoading.value = true;
-      const file = event.target.files[0];
-      let duration = await getAudioDuration(file);
-      await uploadPodcast(file, duration)
-        .then((res) => {
-          isFormLoading.value = false;
-          alert(res.data.message);
-        })
-        .catch(() => {
-          isFormLoading.value = false;
-        });
-    };
     onMounted(async () => {
       await store.fetchAllPodcasts();
     });
 
     return {
-      loadFile,
       store,
     };
   },

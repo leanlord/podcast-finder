@@ -7,7 +7,7 @@
       @change="store.searchPodcasts()"
       v-model="store.searchValue"
     />
-    <button class="search__button">
+    <button @click="store.isModalActive = true" class="search__button">
       <svg
         width="22"
         viewBox="0 0 22 20"
