@@ -6,12 +6,22 @@
       Список подкастов
       {{ store.isSearchResult ? "по релевантности" : "" }}
     </h1>
-    <podcast-list :podcasts="store.podcastsList" />
+    <div class="podcast__preloader" v-if="store.isPodcastLoading">
+      <div class="preloader">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <podcast-list v-else :podcasts="store.podcastsList" />
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { podcastsStore } from "@/store/podcastsStore";
 import PodcastSearch from "@/components/PodcastSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
@@ -23,8 +33,6 @@ export default {
   name: "PodcastView",
   components: { PodcastList, AppHeader, PodcastSearch },
   setup() {
-    let isFormLoading = ref(false);
-    let isPodcastsLoading = ref(false);
     const store = podcastsStore();
     const loadFile = async (event) => {
       isFormLoading.value = true;
@@ -40,16 +48,11 @@ export default {
         });
     };
     onMounted(async () => {
-      isPodcastsLoading.value = true;
-      store.fetchAllPodcasts().then(() => {
-        isPodcastsLoading.value = false;
-      });
+      await store.fetchAllPodcasts();
     });
 
     return {
       loadFile,
-      isFormLoading,
-      isPodcastsLoading,
       store,
     };
   },

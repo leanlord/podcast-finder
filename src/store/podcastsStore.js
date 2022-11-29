@@ -8,13 +8,16 @@ export const podcastsStore = defineStore("podcasts", {
       podcastsList: [],
       searchValue: null,
       isSearchResult: false,
+      isPodcastLoading: true,
     };
   },
   actions: {
     async fetchAllPodcasts(page = 1) {
+      this.isPodcastLoading = true;
       this.isSearchResult = false;
       await getAllPodcasts(page).then((res) => {
         this.podcastsList = podcastsTransform(res.data.data);
+        this.isPodcastLoading = false;
       });
     },
     async searchPodcasts() {
@@ -24,7 +27,7 @@ export const podcastsStore = defineStore("podcasts", {
           this.podcastsList = podcastsTransform(res.data);
         });
       } else {
-        this.fetchAllPodcasts();
+        await this.fetchAllPodcasts();
       }
     },
   },

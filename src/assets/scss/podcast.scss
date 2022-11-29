@@ -53,4 +53,9 @@
   &__heading {
     margin-bottom: 20px;
   }
+
+  &__preloader {
+    display: flex;
+    justify-content: center;
+  }
 }
