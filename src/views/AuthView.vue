@@ -3,11 +3,17 @@
     <div class="auth">
       <div class="auth__wrapper">
         <h1 class="auth__title">Sign in</h1>
-        <form @submit.prevent="loginUser()">
-          <input type="email" v-model="authQuery.email" />
-          <input type="password" v-model="authQuery.password" />
-          <button type="submit">Sign in</button>
+        <form id="auth_form" class="auth__form" @submit.prevent="loginUser()">
+          <input class="auth__input" type="email" v-model="authQuery.email" />
+          <input
+            class="auth__input"
+            type="password"
+            v-model="authQuery.password"
+          />
         </form>
+        <button form="auth_form" class="auth__button" type="submit">
+          Sign in
+        </button>
       </div>
     </div>
   </div>

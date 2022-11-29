@@ -1,0 +1,24 @@
+@import "normalize";
+@import "auth";
+
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap");
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1 {
+  margin: 0;
+}
+
+body {
+  background-color: #fbfbfd;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+input {
+  border: none;
+  outline: none;
+}
