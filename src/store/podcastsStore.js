@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getAllPodcasts } from "@/api/podcasts";
+import { podcastsTransform } from "@/plugins/podcastsTransform";
 
 export const podcastsStore = defineStore("podcasts", {
   state: () => {
@@ -10,7 +11,7 @@ export const podcastsStore = defineStore("podcasts", {
   actions: {
     async fetchPodcasts(page = 1) {
       await getAllPodcasts(page).then((res) => {
-        this.podcastsList = res.data.data;
+        this.podcastsList = podcastsTransform(res.data.data);
       });
     },
   },
