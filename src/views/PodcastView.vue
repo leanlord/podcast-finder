@@ -35,7 +35,7 @@ export default {
     };
     onMounted(async () => {
       isPodcastsLoading.value = true;
-      store.fetchPodcasts().then(() => {
+      store.fetchAllPodcasts().then(() => {
         isPodcastsLoading.value = false;
       });
     });

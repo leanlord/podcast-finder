@@ -17,3 +17,10 @@ export const getAllPodcasts = (page) =>
       page,
     },
   });
+
+export const getPodcastsByWord = (search) =>
+  instance.get("search", {
+    params: {
+      search,
+    },
+  });

@@ -4,6 +4,8 @@
       placeholder="Введите ключевые слова подкаста"
       class="search__input"
       type="text"
+      @change="store.searchPodcasts()"
+      v-model="store.searchValue"
     />
     <button class="search__button">
       <svg
@@ -25,8 +27,16 @@
 </template>
 
 <script>
+import { podcastsStore } from "@/store/podcastsStore";
+
 export default {
   name: "PodcastSearch",
+  setup() {
+    const store = podcastsStore();
+    return {
+      store,
+    };
+  },
 };
 </script>
 
