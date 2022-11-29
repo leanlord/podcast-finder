@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/PodcastView.vue";
 import AuthView from "@/views/AuthView";
 
 const routes = [

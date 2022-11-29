@@ -1,5 +1,6 @@
 @import "normalize";
 @import "auth";
+@import "search";
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap");
 
@@ -39,4 +40,16 @@ input {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.header {
+  padding: 15px 0;
+  text-align: center;
+  &__icon {
+    cursor: pointer;
+  }
+}
+
+button {
+  border: 0;
 }

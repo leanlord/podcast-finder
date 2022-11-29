@@ -1,9 +1,7 @@
 <template>
-  <div class="home">
-    <h1>Select your podcast</h1>
-    <input type="file" @change="(event) => loadFile(event)" />
-    <div v-if="isFormLoading" class="loader"></div>
-    <div v-if="isPodcastsLoading" class="loader"></div>
+  <div class="container">
+    <app-header />
+    <podcast-search />
   </div>
 </template>
 
@@ -12,9 +10,12 @@ import { onMounted, ref } from "vue";
 import { podcastsStore } from "@/store/podcastsStore";
 import { getAudioDuration } from "@/plugins/getAudioDuration";
 import { uploadPodcast } from "@/api/podcasts";
+import PodcastSearch from "@/components/PodcastSearch.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 export default {
-  name: "HomeView",
+  name: "PodcastView",
+  components: { AppHeader, PodcastSearch },
   setup() {
     let isFormLoading = ref(false);
     let isPodcastsLoading = ref(false);

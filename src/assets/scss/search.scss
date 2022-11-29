@@ -1,0 +1,26 @@
+.search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  &__button {
+    cursor: pointer;
+    padding: 16px 13px 13px 13px;
+    background: linear-gradient(180deg, #4b91f7 0%, #367af6 100%);
+    filter: drop-shadow(0px 4px 30px rgba(75, 145, 247, 0.25));
+    border-radius: 15px;
+    transition: filter 0.3s ease;
+
+    &:hover {
+      filter: drop-shadow(0px 4px 30px rgba(75, 145, 247, 0.75));
+    }
+  }
+
+  &__input {
+    min-width: 650px;
+    padding: 16px 20px;
+    filter: drop-shadow(0px 4px 30px rgba(0, 0, 0, 0.25));
+    border-radius: 15px;
+  }
+}
