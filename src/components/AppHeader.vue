@@ -158,15 +158,8 @@
 </template>
 
 <script>
-import router from "@/router";
-
 export default {
   name: "AppHeader",
-  methods: {
-    router() {
-      return router
-    }
-  },
 };
 </script>
 

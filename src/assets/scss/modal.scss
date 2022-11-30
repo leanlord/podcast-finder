@@ -4,4 +4,16 @@
     justify-content: flex-end;
     gap: 10px;
   }
+
+  &__label {
+    border: 1px solid #ccc;
+    display: inline-block;
+    border-radius: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
+  &__file {
+    display: none;
+  }
 }

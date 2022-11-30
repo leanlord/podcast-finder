@@ -9,18 +9,18 @@
     <app-preloader v-if="store.isPodcastLoading" />
     <podcast-list v-else :podcasts="store.podcastsList" />
     <app-dialog
-      v-if="store.isModalActive"
-      :active="store.isModalActive"
-      @hide-modal="store.isModalActive = false"
+      v-if="modalStore.isModalActive"
+      :active="modalStore.isModalActive"
+      @hide-modal="modalStore.$reset()"
       head="Добавление подкаста"
     >
       <template #content>
-        <app-preloader v-if="store.isModalLoading" />
+        <app-preloader v-if="modalStore.isModalLoading" />
         <form
           v-else
           name="modal_form"
           id="modal_form"
-          @submit.prevent="store.createPodcast()"
+          @submit.prevent="modalStore.createPodcast()"
           class="auth__form"
         >
           <label for="modal_name">Название подкаста</label>
@@ -29,30 +29,32 @@
             id="modal_name"
             class="auth__input"
             type="text"
-            v-model="store.modalQuery.name"
+            v-model="modalStore.modalQuery.name"
             placeholder="Название"
           />
-          <label for="modal_file">Выбрать файл</label>
+          <label class="modal__label" for="modal_file">{{
+            modalStore.modalQuery.fileName || "Выбрать файл"
+          }}</label>
           <input
             required
             id="modal_file"
-            class="auth__input"
+            class="auth__input modal__file"
             type="file"
-            @change="(value) => store.loadFile(value)"
+            @change="(value) => modalStore.loadFile(value)"
           />
         </form>
       </template>
       <template #footer>
         <div class="modal__buttons">
           <button
-            :disabled="store.isModalLoading"
-            @click="store.isModalActive = false"
+            :disabled="modalStore.isModalLoading"
+            @click="modalStore.$reset()"
             class="btn btn_white"
           >
             Отменить
           </button>
           <button
-            :disabled="store.isModalLoading"
+            :disabled="modalStore.isModalLoading"
             form="modal_form"
             type="submit"
             class="btn"
@@ -73,6 +75,7 @@ import AppHeader from "@/components/AppHeader.vue";
 import PodcastList from "@/components/PodcastList.vue";
 import AppDialog from "@/components/AppDialog.vue";
 import AppPreloader from "@/components/AppPreloader.vue";
+import { podcastModalStore } from "@/store/podcastModalStore";
 
 export default {
   name: "PodcastView",
@@ -85,12 +88,14 @@ export default {
   },
   setup() {
     const store = podcastsStore();
+    const modalStore = podcastModalStore();
     onMounted(async () => {
       await store.fetchAllPodcasts();
     });
 
     return {
       store,
+      modalStore,
     };
   },
 };

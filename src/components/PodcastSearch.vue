@@ -7,7 +7,7 @@
       @change="store.searchPodcasts()"
       v-model="store.searchValue"
     />
-    <button @click="store.isModalActive = true" class="search__button">
+    <button @click="modalStore.isModalActive = true" class="search__button">
       <svg
         width="22"
         viewBox="0 0 22 20"
@@ -28,13 +28,16 @@
 
 <script>
 import { podcastsStore } from "@/store/podcastsStore";
+import { podcastModalStore } from "@/store/podcastModalStore";
 
 export default {
   name: "PodcastSearch",
   setup() {
     const store = podcastsStore();
+    const modalStore = podcastModalStore();
     return {
       store,
+      modalStore,
     };
   },
 };
