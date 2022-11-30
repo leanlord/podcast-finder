@@ -38,7 +38,7 @@
             id="modal_file"
             class="auth__input"
             type="file"
-            @change="(value) => loadFile(value)"
+            @change="(value) => store.loadFile(value)"
           />
         </form>
       </template>

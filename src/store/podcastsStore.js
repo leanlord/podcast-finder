@@ -6,6 +6,7 @@ import {
 } from "@/api/podcasts";
 import { podcastsTransform } from "@/plugins/podcastsTransform";
 import { getAudioDuration } from "@/plugins/getAudioDuration";
+import { echoInstance } from "@/api/websocket";
 
 export const podcastsStore = defineStore("podcasts", {
   state: () => {
@@ -44,6 +45,15 @@ export const podcastsStore = defineStore("podcasts", {
         .then((res) => {
           this.isModalLoading = false;
           this.isModalActive = false;
+          this.podcastsList.unshift(res.data.data);
+          echoInstance
+            .channel(`private-podcasts.${res.data.data.id}`)
+            .listen(".podcast.proceeded", (e) => {
+              const index = this.podcastsList.findIndex(
+                (podcast) => podcast.id === e.podcast.id
+              );
+              this.podcastsList[index] = e.podcast;
+            });
           alert(res.data.message);
         })
         .catch((e) => {

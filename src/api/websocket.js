@@ -1,19 +1,19 @@
 import Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
-window.io = require("socket.io-client");
+window.Pusher = Pusher;
 
-export const createInstance = () => {
-  const echoInstance = new Echo({
-    broadcaster: "socket.io",
-    host: "http://localhost:3000/",
-    auth: {
-      params: {
-        withCredentials: true,
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+export const echoInstance = new Echo({
+  broadcaster: "pusher",
+  host: "http://localhost/",
+  authEndpoint: "http://localhost/broadcasting/auth",
+  key: "4da1da4746eb8d09e76e",
+  transport: ["websocket"],
+  cluster: "eu",
+  auth: {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    transports: ["websocket"],
-  });
-};
+  },
+  forceTLS: true,
+});
