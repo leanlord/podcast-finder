@@ -45,14 +45,16 @@ export const podcastsStore = defineStore("podcasts", {
         .then((res) => {
           this.isModalLoading = false;
           this.isModalActive = false;
-          this.podcastsList.unshift(res.data.data);
+          const newPodcast = res.data.data;
+          newPodcast.isLoading = true;
+          this.podcastsList.unshift(newPodcast);
           echoInstance
             .channel(`private-podcasts.${res.data.data.id}`)
             .listen(".podcast.proceeded", (e) => {
               const index = this.podcastsList.findIndex(
                 (podcast) => podcast.id === e.podcast.id
               );
-              this.podcastsList[index] = e.podcast;
+              this.podcastsList[index] = podcastsTransform([e.podcast])[0];
             });
           alert(res.data.message);
         })

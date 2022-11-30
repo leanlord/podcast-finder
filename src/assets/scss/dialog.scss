@@ -10,6 +10,9 @@
   opacity: 0;
 
   &_isActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 10vw;
     z-index: 150;
     opacity: 1;
@@ -21,18 +24,12 @@
   &__container {
     z-index: 160;
     position: relative;
-    margin: 1.75rem auto;
-    max-width: fit-content;
+    min-width: 600px;
     max-height: 100%;
     background: #fff;
     border-radius: 6px;
     opacity: 0;
     transition: all 0.4s;
-
-    &--large {
-      min-width: 800px;
-      max-width: 1200px;
-    }
 
     .dialog_isActive & {
       opacity: 1;
@@ -44,7 +41,6 @@
     display: flex;
     align-items: center;
     padding: 16px 50px 16px 16px;
-    margin-bottom: 20px;
     border-bottom: 1px solid #ebedf2;
   }
 
@@ -91,7 +87,7 @@
   }
 
   &__content {
-    padding: 0 16px;
+    padding: 16px;
     background-color: #fff;
     border-radius: 6px;
     border-bottom: 1px solid #ebedf2;

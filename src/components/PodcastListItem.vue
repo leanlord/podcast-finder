@@ -1,5 +1,5 @@
 <template>
-  <div class="podcast">
+  <div :class="{ 'podcast_is-loading': item.isLoading }" class="podcast">
     <div class="podcast__avatar"></div>
     <div class="podcast__content">
       <div class="podcast__header">
