@@ -24,3 +24,5 @@ export const getPodcastsByWord = (search) =>
       search,
     },
   });
+
+export const likePodcast = (id) => instance.post(`podcasts/${id}/like`, {});

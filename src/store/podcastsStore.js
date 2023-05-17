@@ -12,6 +12,10 @@ export const podcastsStore = defineStore("podcasts", {
     };
   },
   actions: {
+    setItemLikeCount(itemId, likesCount) {
+      const index = this.podcastsList.findIndex((el) => el.id === itemId);
+      this.podcastsList[index].likes_count = likesCount;
+    },
     async fetchAllPodcasts(page = 1) {
       this.isPodcastLoading = true;
       this.isSearchResult = false;
