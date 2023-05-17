@@ -33,6 +33,7 @@ export default {
       default: () => false,
     },
   },
+  emits: ["hideModal"],
   mounted() {
     document.body.style.overflowY = "hidden";
   },

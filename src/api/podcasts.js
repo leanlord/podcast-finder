@@ -26,3 +26,8 @@ export const getPodcastsByWord = (search) =>
   });
 
 export const likePodcast = (id) => instance.post(`podcasts/${id}/like`, {});
+
+export const commentCurrentPodcast = (id, comment) =>
+  instance.post(`podcasts/${id}/comment`, {
+    comment,
+  });

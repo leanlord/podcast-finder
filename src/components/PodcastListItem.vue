@@ -1,5 +1,9 @@
 <template>
-  <div :class="{ 'podcast_is-loading': item.isLoading }" class="podcast">
+  <div
+    @click="isModalActive = true"
+    :class="{ 'podcast_is-loading': item.isLoading }"
+    class="podcast"
+  >
     <div class="podcast__avatar"></div>
     <div class="podcast__content">
       <div class="podcast__header">
@@ -16,7 +20,7 @@
       <div class="podcast__footer">
         <div>
           <font-awesome-icon
-            @click="toggleLikeStatus(item.id)"
+            @click.stop="toggleLikeStatus(item.id)"
             style="cursor: pointer"
             v-if="isPodcastLiked"
             color="#ff4646"
@@ -25,7 +29,7 @@
           />
 
           <font-awesome-icon
-            @click="toggleLikeStatus(item.id)"
+            @click.stop="toggleLikeStatus(item.id)"
             style="cursor: pointer"
             v-else
             color="#ff4646"
@@ -35,6 +39,39 @@
           <span>{{ item.likes_count }}</span>
         </div>
       </div>
+      <teleport to="body">
+        <app-dialog
+          @hide-modal="isModalActive = false"
+          head="Комментарии"
+          :active="isModalActive"
+          v-if="isModalActive"
+        >
+          <template #content>
+            <h4 class="comment__head">Комментарии</h4>
+            <ul v-if="item.comments.length > 0" class="comment__wrapper">
+              <li v-for="comment in item.comments" :key="comment.id">
+                <podcast-comment :comment="comment" />
+              </li>
+            </ul>
+            <p v-else>Комментариев к подкасту нет.</p>
+            <h4>Новый комментарий</h4>
+            <div>
+              <textarea
+                v-model="commentValue"
+                rows="5"
+                cols="70"
+                placeholder="Комментарий"
+              ></textarea>
+            </div>
+            <button
+              @click="commentPodcast(item.id, commentValue)"
+              class="button comment__button"
+            >
+              Отправить
+            </button>
+          </template>
+        </app-dialog>
+      </teleport>
     </div>
   </div>
 </template>
@@ -42,12 +79,14 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ref } from "vue";
-import { likePodcast } from "@/api/podcasts";
+import { commentCurrentPodcast, likePodcast } from "@/api/podcasts";
 import { podcastsStore } from "@/store/podcastsStore";
+import AppDialog from "@/components/AppDialog.vue";
+import PodcastComment from "@/components/PodcastComment.vue";
 
 export default {
   name: "PodcastItem",
-  components: { FontAwesomeIcon },
+  components: { PodcastComment, AppDialog, FontAwesomeIcon },
   props: {
     item: {
       type: Object,
@@ -57,6 +96,8 @@ export default {
   setup() {
     const store = podcastsStore();
     let isPodcastLiked = ref(false);
+    let isModalActive = ref(false);
+    let commentValue = ref("");
     const toggleLikeStatus = async (id) => {
       await likePodcast(id).then((res) => {
         store.setItemLikeCount(id, res.data);
@@ -64,9 +105,18 @@ export default {
       });
     };
 
+    const commentPodcast = async (id, comment) => {
+      await commentCurrentPodcast(id, comment.value).then((res) => {
+        console.log(res);
+      });
+    };
+
     return {
       isPodcastLiked,
       toggleLikeStatus,
+      isModalActive,
+      commentPodcast,
+      commentValue,
     };
   },
 };
