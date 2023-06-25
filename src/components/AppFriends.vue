@@ -28,6 +28,13 @@
         >
           Открыть подкасты
         </button>
+        <button
+          v-if="isRecommendedFriends"
+          @click.stop="toggleSubscribeAuthor(friend.id)"
+          class="button"
+        >
+          {{ friend.is_followed ? "Отписаться" : "Подписаться" }}
+        </button>
       </li>
     </ul>
   </div>
@@ -35,6 +42,9 @@
 
 <script>
 import { computed } from "vue";
+import { followAuthor } from '@/api/podcasts'
+import { podcastsStore } from '@/store/podcastsStore'
+import { usersStore } from '@/store/usersStore'
 
 export default {
   name: "AppFriends",
@@ -54,8 +64,18 @@ export default {
       return props.recommendedFriends.length > 0;
     });
 
+    const store = podcastsStore();
+    const storeUsers = usersStore();
+
+    const toggleSubscribeAuthor = async (friend) => {
+      await followAuthor(friend);
+      await store.fetchAllPodcasts();
+      await storeUsers.fetchFollowings();
+    };
+
     return {
       isRecommendedFriends,
+      toggleSubscribeAuthor,
     };
   },
 };
