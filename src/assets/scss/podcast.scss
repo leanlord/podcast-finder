@@ -7,6 +7,10 @@
   background-color: #fff;
   cursor: pointer;
 
+  &__avatar {
+    height: 170px;
+  }
+
   &__author {
     display: flex;
     align-items: center;

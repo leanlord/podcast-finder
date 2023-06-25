@@ -160,7 +160,7 @@
     <div class="user-wrapper">
       <img
         class="avatar"
-        height="50"
+        height="60"
         :src="currentUser.avatar"
         alt="Аватарка"
       />

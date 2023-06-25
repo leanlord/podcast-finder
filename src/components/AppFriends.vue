@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2 class="heading">Подписки</h2>
+  <div class="heading">
+    <h2>Подписки</h2>
     <ul v-if="friends.length > 0" class="friends">
       <li class="friends__item" v-for="friend in friends" :key="friend.id">
         <img
@@ -64,5 +64,9 @@ export default {
 
 .heading {
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 </style>
