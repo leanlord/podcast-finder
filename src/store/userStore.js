@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { logoutUser } from "@/api/user";
+import { getUserInfo, logoutUser } from "@/api/user";
 import router from "@/router";
 
 export const userStore = defineStore("user", {
@@ -11,6 +11,11 @@ export const userStore = defineStore("user", {
       await logoutUser().then(() => {
         localStorage.removeItem("token");
         router.push("/login");
+      });
+    },
+    async fetchUserInfo() {
+      await getUserInfo().then((res) => {
+        this.currentUser = res.data.data;
       });
     },
   },

@@ -9,7 +9,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap");
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -67,6 +67,9 @@ input {
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 15px 0;
   text-align: center;
 

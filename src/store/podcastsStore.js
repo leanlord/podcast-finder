@@ -16,11 +16,15 @@ export const podcastsStore = defineStore("podcasts", {
       const index = this.podcastsList.findIndex((el) => el.id === itemId);
       this.podcastsList[index].likes_count = likesCount;
     },
+    setPodcasts(podcasts) {
+      this.podcastsList = podcastsTransform(podcasts);
+    },
     async fetchAllPodcasts(page = 1) {
       this.isPodcastLoading = true;
       this.isSearchResult = false;
+
       await getAllPodcasts(page).then((res) => {
-        this.podcastsList = podcastsTransform(res.data.data);
+        this.setPodcasts(res.data.data);
         this.isPodcastLoading = false;
       });
     },
@@ -28,7 +32,7 @@ export const podcastsStore = defineStore("podcasts", {
       if (this.searchValue.length > 0) {
         this.isSearchResult = true;
         await getPodcastsByWord(this.searchValue).then((res) => {
-          this.podcastsList = podcastsTransform(res.data);
+          this.setPodcasts(res.data);
         });
       } else {
         await this.fetchAllPodcasts();

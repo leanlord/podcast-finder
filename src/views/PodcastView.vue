@@ -1,21 +1,23 @@
 <template>
   <div class="container">
     <app-header />
-    <div class="wrapper">
-      <podcast-search />
-      <button @click="handleLogoutClick()" class="button button__exit">
-        <font-awesome-icon
-          size="xl"
-          :icon="['fas', 'arrow-right-from-bracket']"
-        />
-      </button>
-    </div>
     <h1 class="podcast__heading">
       Список подкастов
       {{ store.isSearchResult ? "по релевантности" : "" }}
     </h1>
+    <button @click="handlePodcastsClick()" class="button podcast__button">
+      Все подкасты
+    </button>
     <app-preloader v-if="store.isPodcastLoading" />
-    <podcast-list v-else :podcasts="store.podcastsList" />
+    <div v-else class="wrapper">
+      <podcast-list :podcasts="store.podcastsList" />
+      <aside>
+        <app-friends
+          @open-author-podcast="(podcasts) => openAuthorPodcasts(podcasts)"
+          :friends="followingUsers"
+        />
+      </aside>
+    </div>
     <app-dialog
       v-if="modalStore.isModalActive"
       :active="modalStore.isModalActive"
@@ -78,42 +80,50 @@
 <script>
 import { onMounted } from "vue";
 import { podcastsStore } from "@/store/podcastsStore";
-import PodcastSearch from "@/components/PodcastSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import PodcastList from "@/components/PodcastList.vue";
 import AppDialog from "@/components/AppDialog.vue";
 import AppPreloader from "@/components/AppPreloader.vue";
 import { podcastModalStore } from "@/store/podcastModalStore";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { userStore } from "@/store/userStore";
+import AppFriends from "@/components/AppFriends.vue";
+import { usersStore } from "@/store/usersStore";
+import { storeToRefs } from "pinia";
 
 export default {
   name: "PodcastView",
   components: {
-    FontAwesomeIcon,
+    AppFriends,
     AppPreloader,
     AppDialog,
     PodcastList,
     AppHeader,
-    PodcastSearch,
   },
   setup() {
     const store = podcastsStore();
-    const storeUser = userStore();
     const modalStore = podcastModalStore();
+    const storeUsers = usersStore();
 
-    const handleLogoutClick = async () => {
-      await storeUser.logoutUser();
-    };
+    const { followingUsers } = storeToRefs(storeUsers);
 
     onMounted(async () => {
       await store.fetchAllPodcasts();
+      await storeUsers.fetchFollowings();
     });
+
+    const handlePodcastsClick = async () => {
+      await store.fetchAllPodcasts();
+    };
+
+    const openAuthorPodcasts = (podcasts) => {
+      store.setPodcasts(podcasts);
+    };
 
     return {
       store,
       modalStore,
-      handleLogoutClick,
+      followingUsers,
+      handlePodcastsClick,
+      openAuthorPodcasts,
     };
   },
 };
@@ -121,13 +131,8 @@ export default {
 
 <style scoped lang="scss">
 .wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-}
-.button {
-  &__exit {
-    padding: 0 13px;
-  }
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 20px;
 }
 </style>
