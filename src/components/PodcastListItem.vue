@@ -4,7 +4,9 @@
     :class="{ 'podcast_is-loading': item.isLoading }"
     class="podcast"
   >
-    <div class="podcast__avatar"></div>
+    <div class="podcast__avatar">
+      <img :src="item.avatar" alt="Аватар" />
+    </div>
     <div class="podcast__content">
       <div class="podcast__header">
         <span class="podcast__date">
@@ -55,7 +57,7 @@
               </li>
             </ul>
             <p v-else>Комментариев к подкасту нет.</p>
-            <h4>Новый комментарий</h4>
+            <h4 class="comment__head">Новый комментарий</h4>
             <div>
               <textarea
                 v-model="commentValue"

@@ -1,7 +1,6 @@
 .comment {
   background-color: #ffffff;
-  border-radius: 5px;
-  border: 2px solid;
+  border-bottom: 2px solid;
 
   &__wrapper {
     display: flex;
@@ -12,6 +11,12 @@
 
   &__head {
     margin-bottom: 10px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
   &__button {
