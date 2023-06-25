@@ -10,6 +10,16 @@
         <span class="podcast__date">
           {{ item.formatted_date }}
         </span>
+        <div class="podcast__author">
+          <img :src="item.author.avatar" alt="Аватар" height="20" />
+          <span>{{ item.author.name }} </span>
+          <button
+            @click.stop="toggleSubscribeAuthor(item.author.id)"
+            class="button"
+          >
+            {{ item.is_followed ? "Отписаться" : "Подписаться" }}
+          </button>
+        </div>
       </div>
       <div class="podcast__title">
         {{ item.original_name || "Нет имени" }}
@@ -79,7 +89,11 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ref } from "vue";
-import { commentCurrentPodcast, likePodcast } from "@/api/podcasts";
+import {
+  commentCurrentPodcast,
+  followAuthor,
+  likePodcast,
+} from "@/api/podcasts";
 import { podcastsStore } from "@/store/podcastsStore";
 import AppDialog from "@/components/AppDialog.vue";
 import PodcastComment from "@/components/PodcastComment.vue";
@@ -105,6 +119,10 @@ export default {
       });
     };
 
+    const toggleSubscribeAuthor = async (friend) => {
+      await followAuthor(friend);
+    };
+
     const commentPodcast = async (id, comment) => {
       await commentCurrentPodcast(id, comment)
         .then(() => {
@@ -121,6 +139,7 @@ export default {
       isModalActive,
       commentPodcast,
       commentValue,
+      toggleSubscribeAuthor,
     };
   },
 };

@@ -31,3 +31,10 @@ export const commentCurrentPodcast = (id, comment) =>
   instance.post(`podcasts/${id}/comment`, {
     comment,
   });
+
+export const followAuthor = (friend) =>
+  instance.get("friends", {
+    params: {
+      friend,
+    },
+  });
