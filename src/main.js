@@ -8,7 +8,10 @@ import {
   faComment,
   faHeart as faHeartRegular,
 } from "@fortawesome/free-regular-svg-icons";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightFromBracket,
+  faHeart,
+} from "@fortawesome/free-solid-svg-icons";
 
 const pinia = createPinia();
 
@@ -18,4 +21,4 @@ createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");
 
-library.add(faHeart, faHeartRegular, faComment);
+library.add(faHeart, faHeartRegular, faComment, faArrowRightFromBracket);

@@ -1,7 +1,15 @@
 <template>
   <div class="container">
     <app-header />
-    <podcast-search />
+    <div class="wrapper">
+      <podcast-search />
+      <button @click="handleLogoutClick()" class="button button__exit">
+        <font-awesome-icon
+          size="xl"
+          :icon="['fas', 'arrow-right-from-bracket']"
+        />
+      </button>
+    </div>
     <h1 class="podcast__heading">
       Список подкастов
       {{ store.isSearchResult ? "по релевантности" : "" }}
@@ -76,10 +84,13 @@ import PodcastList from "@/components/PodcastList.vue";
 import AppDialog from "@/components/AppDialog.vue";
 import AppPreloader from "@/components/AppPreloader.vue";
 import { podcastModalStore } from "@/store/podcastModalStore";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { userStore } from "@/store/userStore";
 
 export default {
   name: "PodcastView",
   components: {
+    FontAwesomeIcon,
     AppPreloader,
     AppDialog,
     PodcastList,
@@ -88,7 +99,13 @@ export default {
   },
   setup() {
     const store = podcastsStore();
+    const storeUser = userStore();
     const modalStore = podcastModalStore();
+
+    const handleLogoutClick = async () => {
+      await storeUser.logoutUser();
+    };
+
     onMounted(async () => {
       await store.fetchAllPodcasts();
     });
@@ -96,7 +113,21 @@ export default {
     return {
       store,
       modalStore,
+      handleLogoutClick,
     };
   },
 };
 </script>
+
+<style scoped lang="scss">
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.button {
+  &__exit {
+    padding: 0 13px;
+  }
+}
+</style>
