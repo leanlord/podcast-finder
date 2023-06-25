@@ -4,9 +4,7 @@
     :class="{ 'podcast_is-loading': item.isLoading }"
     class="podcast"
   >
-    <div class="podcast__avatar">
-      <img :src="item.avatar" alt="Аватар" />
-    </div>
+    <div v-html="item.avatar" class="podcast__avatar"></div>
     <div class="podcast__content">
       <div class="podcast__header">
         <span class="podcast__date">
