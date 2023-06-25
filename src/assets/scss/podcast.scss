@@ -82,6 +82,12 @@
     color: #000;
   }
 
+  &__likes {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   &__text {
     max-width: 1000px;
     max-height: 44px;

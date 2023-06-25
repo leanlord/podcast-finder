@@ -15,6 +15,7 @@ export const podcastsStore = defineStore("podcasts", {
     setItemLikeCount(itemId, likesCount) {
       const index = this.podcastsList.findIndex((el) => el.id === itemId);
       this.podcastsList[index].likes_count = likesCount;
+      this.podcastsList[index].is_liked = !this.podcastsList[index].is_liked;
     },
     setPodcasts(podcasts) {
       this.podcastsList = podcastsTransform(podcasts);

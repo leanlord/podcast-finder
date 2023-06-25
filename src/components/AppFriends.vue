@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="heading">Подписки</h2>
-    <ul class="friends">
+    <ul v-if="friends.length > 0" class="friends">
       <li class="friends__item" v-for="friend in friends" :key="friend.id">
         <img
           class="avatar"
@@ -24,12 +24,16 @@
         </button>
       </li>
     </ul>
+    <p v-else>Подписок нет</p>
   </div>
 </template>
 
 <script>
+import AppPreloader from "@/components/AppPreloader.vue";
+
 export default {
   name: "AppFriends",
+  components: { AppPreloader },
   props: {
     friends: {
       type: Array,

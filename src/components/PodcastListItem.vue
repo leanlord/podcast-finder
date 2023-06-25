@@ -14,6 +14,7 @@
           <img :src="item.author.avatar" alt="Аватар" height="20" />
           <span>{{ item.author.name }} </span>
           <button
+            v-if="item.author.id !== currentUser.id"
             @click.stop="toggleSubscribeAuthor(item.author.id)"
             class="button"
           >
@@ -28,23 +29,13 @@
         {{ item.text_contents }}
       </div>
       <div class="podcast__footer">
-        <div>
+        <div class="podcast__likes">
           <font-awesome-icon
             @click.stop="toggleLikeStatus(item.id)"
             style="cursor: pointer"
-            v-if="isPodcastLiked"
             color="#ff4646"
             size="xl"
-            :icon="['fas', 'heart']"
-          />
-
-          <font-awesome-icon
-            @click.stop="toggleLikeStatus(item.id)"
-            style="cursor: pointer"
-            v-else
-            color="#ff4646"
-            size="xl"
-            :icon="['far', 'heart']"
+            :icon="[item.is_liked ? 'fas' : 'far', 'heart']"
           />
           <span>{{ item.likes_count }}</span>
         </div>
@@ -97,6 +88,9 @@ import {
 import { podcastsStore } from "@/store/podcastsStore";
 import AppDialog from "@/components/AppDialog.vue";
 import PodcastComment from "@/components/PodcastComment.vue";
+import { storeToRefs } from "pinia";
+import { userStore } from "@/store/userStore";
+import { usersStore } from "@/store/usersStore";
 
 export default {
   name: "PodcastItem",
@@ -109,18 +103,23 @@ export default {
   },
   setup() {
     const store = podcastsStore();
-    let isPodcastLiked = ref(false);
+    const storeUser = userStore();
+    const storeUsers = usersStore();
+    const { currentUser } = storeToRefs(storeUser);
+
     let isModalActive = ref(false);
     const commentValue = ref("");
+
     const toggleLikeStatus = async (id) => {
       await likePodcast(id).then((res) => {
-        store.setItemLikeCount(id, res.data);
-        isPodcastLiked.value = !isPodcastLiked.value;
+        store.setItemLikeCount(id, res.data.data.likes_count);
       });
     };
 
     const toggleSubscribeAuthor = async (friend) => {
       await followAuthor(friend);
+      await store.fetchAllPodcasts();
+      await storeUsers.fetchFollowings();
     };
 
     const commentPodcast = async (id, comment) => {
@@ -134,12 +133,12 @@ export default {
     };
 
     return {
-      isPodcastLiked,
       toggleLikeStatus,
       isModalActive,
       commentPodcast,
       commentValue,
       toggleSubscribeAuthor,
+      currentUser,
     };
   },
 };

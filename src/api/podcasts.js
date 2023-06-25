@@ -15,6 +15,7 @@ export const getAllPodcasts = (page) =>
   instance.get("podcasts", {
     params: {
       page,
+      per_page: 1000,
     },
   });
 
@@ -33,8 +34,6 @@ export const commentCurrentPodcast = (id, comment) =>
   });
 
 export const followAuthor = (friend) =>
-  instance.get("friends", {
-    params: {
-      friend,
-    },
+  instance.post("friends", {
+    friend,
   });
