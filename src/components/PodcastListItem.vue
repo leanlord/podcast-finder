@@ -97,7 +97,7 @@ export default {
     const store = podcastsStore();
     let isPodcastLiked = ref(false);
     let isModalActive = ref(false);
-    let commentValue = ref("");
+    const commentValue = ref("");
     const toggleLikeStatus = async (id) => {
       await likePodcast(id).then((res) => {
         store.setItemLikeCount(id, res.data);
@@ -106,9 +106,13 @@ export default {
     };
 
     const commentPodcast = async (id, comment) => {
-      await commentCurrentPodcast(id, comment.value).then((res) => {
-        console.log(res);
-      });
+      await commentCurrentPodcast(id, comment)
+        .then(() => {
+          alert("Комментарий отправлен");
+        })
+        .catch(() => {
+          alert("Произошла ошибка при отправке комментария");
+        });
     };
 
     return {
