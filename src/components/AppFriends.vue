@@ -1,8 +1,14 @@
 <template>
   <div class="heading">
-    <h2>Подписки</h2>
-    <ul v-if="friends.length > 0" class="friends">
-      <li class="friends__item" v-for="friend in friends" :key="friend.id">
+    <h2>
+      {{ isRecommendedFriends > 0 ? "Рекомендуем подписаться" : "Подписки" }}
+    </h2>
+    <ul class="friends">
+      <li
+        class="friends__item"
+        v-for="friend in isRecommendedFriends ? recommendedFriends : friends"
+        :key="friend.id"
+      >
         <img
           class="avatar"
           height="50"
@@ -24,23 +30,34 @@
         </button>
       </li>
     </ul>
-    <p v-else>Подписок нет</p>
   </div>
 </template>
 
 <script>
-import AppPreloader from "@/components/AppPreloader.vue";
+import { computed } from "vue";
 
 export default {
   name: "AppFriends",
-  components: { AppPreloader },
   props: {
     friends: {
       type: Array,
       default: () => [],
     },
+    recommendedFriends: {
+      type: Array,
+      default: () => [],
+    },
   },
   emits: ["openAuthorPodcast"],
+  setup(props) {
+    const isRecommendedFriends = computed(() => {
+      return props.recommendedFriends.length > 0;
+    });
+
+    return {
+      isRecommendedFriends,
+    };
+  },
 };
 </script>
 

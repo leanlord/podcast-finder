@@ -14,7 +14,8 @@
       <aside>
         <app-friends
           @open-author-podcast="(podcasts) => openAuthorPodcasts(podcasts)"
-          :friends="followingUsers"
+          :friends="followingUsers.friends"
+          :recommended-friends="followingUsers.recommendedFriends"
         />
       </aside>
     </div>
@@ -102,7 +103,6 @@ export default {
     const store = podcastsStore();
     const modalStore = podcastModalStore();
     const storeUsers = usersStore();
-
     const { followingUsers } = storeToRefs(storeUsers);
 
     onMounted(async () => {

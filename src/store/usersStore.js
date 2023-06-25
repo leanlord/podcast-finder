@@ -8,7 +8,7 @@ export const usersStore = defineStore("users", {
   actions: {
     async fetchFollowings() {
       await getFollowingUsers().then((res) => {
-        this.followingUsers = res.data.data;
+        this.followingUsers = res.data;
       });
     },
   },
